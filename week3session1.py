@@ -1,3 +1,40 @@
+# A post is considered valid if:
+
+#     Every opening tag has a corresponding closing tag of the same type.
+#     Tags are closed in the correct order.
+
+
+def is_valid_post_format(posts):
+        stack = []
+        for c in posts:
+            if (c == '(' or c == '{' or c == '['):
+                stack.append(c)
+
+            elif (c == ')'): 
+                if stack and stack[-1] == '(':
+                    stack.pop()
+                else:
+                    return False
+
+            elif (c == ']'): 
+                if stack and stack[-1] == '[':
+                    stack.pop()
+                else:
+                    return False
+            
+            elif (c == '}'): 
+                if stack and stack[-1] == '{':
+                    stack.pop()
+                else:
+                    return False
+
+        return len(stack) == 0
+
+# print(is_valid_post_format("()"))
+# print(is_valid_post_format("()[]{}")) 
+# print(is_valid_post_format("(]"))
+
+
 # On your platform, comments on posts are displayed in the order they are received.
 #  However, for a special feature, you need to reverse the order of comments before displaying them.
 #  Given a queue of comments represented as a list of strings, reverse the order using a stack.
@@ -14,9 +51,9 @@ def reverse_comments_queue(comments):
         reverseCommments.append(stack.pop())
     return reverseCommments
 
-print(reverse_comments_queue(["Great post!", "Love it!", "Thanks for sharing."]))
+# print(reverse_comments_queue(["Great post!", "Love it!", "Thanks for sharing."]))
 
-print(reverse_comments_queue(["First!", "Interesting read.", "Well written."]))
+# print(reverse_comments_queue(["First!", "Interesting read.", "Well written."]))
 
 
 # As part of a new feature on your social media platform, you want to highlight post titles that are symmetrical, 
@@ -42,8 +79,8 @@ def is_symmetrical_title(title):
     return True
 
 
-print(is_symmetrical_title("A Santa at NASA"))
-print(is_symmetrical_title("Social Media")) 
+# print(is_symmetrical_title("A Santa at NASA"))
+# print(is_symmetrical_title("Social Media")) 
     
 
 
@@ -95,8 +132,8 @@ def engagement_boost(engagements):
         posiiton -= 1 
     return result
 
-print(engagement_boost([-4, -1, 0, 3, 10]))
-print(engagement_boost([-7, -3, 2, 3, 11]))
+# print(engagement_boost([-4, -1, 0, 3, 10]))
+# print(engagement_boost([-7, -3, 2, 3, 11]))
 
 
 # You want to make sure your posts are clean and professional. Given a string post of lowercase and uppercase
@@ -112,9 +149,69 @@ print(engagement_boost([-7, -3, 2, 3, 11]))
 
 def clean_post(post):
   # same logic as paranthesis problem w/ stack
-  stack = []
-  for char in post:
-      if char.isupper():
-          stack.append(char)
-        if char.islower():
-          
+    stack = []
+    for char in post:
+        if char.isupper():
+            if stack and stack[-1] == char.lower():
+                stack.pop()
+            else:
+                stack.append(char)
+        elif char.islower():
+            if stack and stack[-1] == char.upper():
+                stack.pop()
+            else:
+                stack.append(char)
+    return ''.join(stack)
+
+# print(clean_post("poOost")) 
+# print(clean_post("abBAcC")) 
+# print(clean_post("s")) 
+
+from collections import deque
+
+# You want to add a creative twist to your posts by reversing the order of characters in each word within your 
+# post while still preserving whitespace and the initial word order. 
+# Given a string post, use a queue to reverse the order of characters in each word within the sentence.
+def edit_post(post):
+    new_post = ""
+    arr = post.split()
+    queue = deque()
+    for word in arr:
+        for char in word:
+                queue.append(char)
+        queue.append(" ")
+        while queue:
+            new_post += queue.pop()
+        queue.clear()
+    return new_post
+  
+# print(edit_post("Boost your engagement with these tips")) 
+# print(edit_post("Check out my latest vlog")) 
+
+
+# You often draft your posts and edit them before publishing. 
+# Given two draft strings draft1 and draft2, return true if they are equal when both are typed into empty text editors. 
+# '#' means a backspace character.
+
+# Note that after backspacing an empty text, the text will remain empty.
+
+def post_compare(draft1, draft2):
+    stack = []
+    stack2 = []
+    for char in draft1:
+        if char == "#":
+            if stack:
+                stack.pop()
+        else:
+            stack.append(char)
+    for char in draft2:
+        if char == "#":
+            if stack2:
+                stack2.pop()
+        else:
+            stack2.append(char)
+    return stack == stack2
+
+# print(post_compare("ab#c", "ad#c"))
+# print(post_compare("ab##", "c#d#")) 
+# print(post_compare("a#c", "b")) 
