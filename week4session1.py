@@ -107,11 +107,10 @@ def identify_popular_creators(nft_collection):
     for i in nft_collection:
         if i["creator"] in new_dict:
             new_dict[i["creator"]]+=1
-            result.append(i["name"])
+            result.append(i["creator"])
         else:
             new_dict[i["creator"]]=1
-
-    print(result)
+    return result
 
 
 
