@@ -106,6 +106,66 @@ kk_slider = Villager("K.K. Slider", "Dog", "Lazy", "dig it")
 isabelle.neighbor = tom_nook
 tom_nook.neighbor = kk_slider
 
-print(message_received(isabelle, kk_slider))
-print(message_received(kk_slider, isabelle))
+# print(message_received(isabelle, kk_slider))
+# print(message_received(kk_slider, isabelle))
+
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+tom_nook = Node("Tom Nook")
+tommy = Node("Tommy") 
+tom_nook.next = tommy 
+# print(tom_nook.value) 
+# print(tom_nook.next.value) 
+# print(tommy.value) 
+# print(tommy.next) 
+
+# Using the linked list from Problem 9, create a new Node timmy with value "Timmy"
+#  and place it between tom_nook and tommy so the new linked list is tom_nook -> timmy -> tommy.
+timmy = Node("Timmy")
+timmy.next = tommy
+tom_nook.next = timmy
+# print(tom_nook.value)
+# print(tom_nook.next.value)
+# print(timmy.value)
+# print(timmy.next.value)
+# print(tommy.value)
+# print(tommy.next)
+
+# Using the linked list from Problem 10, remove the tom_nook node and add in a node
+#  saharah with value "Saharah" to the end of the list so that the resulting list is timmy -> tommy -> saharah.
+
+tom_nook.next = None
+timmy.next = tommy
+saharah = Node("Saharah")
+tommy.next = saharah
+# print(tom_nook.next) 
+# print(timmy.value) 
+# print(timmy.next.value)  
+# print(tommy.value) 
+# print(tommy.next.value)
+# print(saharah.value)  
+# print(saharah.next) 
+
+
+
+def print_list(head):
+    curr = head
+    tojoin = []
+    while curr:
+        tojoin.append(curr.value)
+        curr = curr.next
+    return " -> ".join(tojoin)
+
+isabelle = Node("Isabelle")
+saharah = Node("Saharah")
+cj = Node("C.J.")
+
+isabelle.next = saharah
+saharah.next = cj
+
+print(print_list(isabelle))
+
 
