@@ -86,8 +86,16 @@ def is_circular(clues):
     curr = clues
     while curr.next:
         if curr.next == clues:
-            return True # for some reason infinite loop if u check outside of it. lol.
-            # ig in all cases here if next points back to head it is the tail pointing back
+            return True # put statement in here to avoid infinite loop because the curr.next will point to the head if true
+            # and continue endlessly
+            # so if any nodes point to head that is the looping/tail part
+            # if i did it like
+            # while curr.next:
+            #   curr = curr.next
+            # if curr.next == clues:
+            #   return True
+            # it wouldnt work because the while loop will keep going since there will always be a curr.next if it points to head
+            # so return inside the loop if it points to head to make it stop
         curr = curr.next 
     return False
 
