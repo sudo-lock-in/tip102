@@ -141,28 +141,35 @@ witness_timeline = Node(1, Node(3, Node(4)))
 # print_linked_list(merge_timelines(known_timeline, witness_timeline))
 
 
-# helper
+# helper (fixed)
 def tail_to_head(head):
     curr = head
-    while curr:
-        if not curr.next.next:
-            tail = curr.next
-            curr.next = None
+    while curr.next.next:
         curr = curr.next
+    tail = curr.next
+    curr.next = None
     tail.next = head
     return tail
 
 def rotate_right(evidence, k):
-    rotated = tail_to_head(evidence)
-    for i in range(k -1 ):
+    rotated = evidence
+    curr = evidence
+    length = 0
+    while curr:
+        length += 1
+        curr = curr.next
+
+    k = k % length # makes it proportionate to array size
+
+    for i in range(k):
         rotated = tail_to_head(rotated)
     return rotated
 
-evidence_list1 = Node(1, Node(2, Node(3, Node(4, Node(5)))))
-evidence_list2 = Node(0, Node(1, Node(2)))
+# evidence_list1 = Node(1, Node(2, Node(3, Node(4, Node(5)))))
+# evidence_list2 = Node(0, Node(1, Node(2)))
 
-# print_linked_list(rotate_right(evidence_list1, 2))
-# print_linked_list(rotate_right(evidence_list2, 4))
+print_linked_list(rotate_right(evidence_list1, 2))
+print_linked_list(rotate_right(evidence_list2, 4))
 
 
 def add_two_numbers(head_a, head_b):

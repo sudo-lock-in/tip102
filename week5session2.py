@@ -118,13 +118,23 @@ head2 = Node(8, Node(5, Node(6, Node(7))))
 # Linked List: 8 -> 5 -> 6 -> 7
 # print(find_min(head2))
 
+# def tail_to_head(head):
+#     curr = head
+#     while curr:
+#         if not curr.next.next:
+#             tail = curr.next
+#             curr.next = None
+#         curr = curr.next
+#     tail.next = head
+#     return tail
+
+# corrected:
 def tail_to_head(head):
     curr = head
-    while curr:
-        if not curr.next.next:
-            tail = curr.next
-            curr.next = None
+    while curr.next.next:
         curr = curr.next
+    tail = curr.next
+    curr.next = None
     tail.next = head
     return tail
 
