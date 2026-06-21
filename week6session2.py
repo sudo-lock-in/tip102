@@ -113,5 +113,83 @@ suspect_ratings = Node(1, Node(4, Node(3, Node(2, Node(5, Node(2))))))
 # print_linked_list(partition(suspect_ratings, 3))
 
 
+def merge_timelines(known_timeline, witness_timeline):
+    known = known_timeline
+    witness = witness_timeline
+    temp_head = Node(0)
+    temp = temp_head
+    while known or witness:
+        if not known:
+            temp.next = witness
+            witness = witness.next
+        elif not witness:
+            temp.next = known
+            known = known.next
+        elif known.value <= witness.value:
+            temp.next = known
+            known = known.next
+        else:
+            temp.next = witness
+            witness = witness.next
+        temp = temp.next
+    return temp_head.next
 
 
+known_timeline = Node(1, Node(2, Node(4)))
+witness_timeline = Node(1, Node(3, Node(4)))
+
+# print_linked_list(merge_timelines(known_timeline, witness_timeline))
+
+
+# helper
+def tail_to_head(head):
+    curr = head
+    while curr:
+        if not curr.next.next:
+            tail = curr.next
+            curr.next = None
+        curr = curr.next
+    tail.next = head
+    return tail
+
+def rotate_right(evidence, k):
+    rotated = tail_to_head(evidence)
+    for i in range(k -1 ):
+        rotated = tail_to_head(rotated)
+    return rotated
+
+evidence_list1 = Node(1, Node(2, Node(3, Node(4, Node(5)))))
+evidence_list2 = Node(0, Node(1, Node(2)))
+
+# print_linked_list(rotate_right(evidence_list1, 2))
+# print_linked_list(rotate_right(evidence_list2, 4))
+
+
+def add_two_numbers(head_a, head_b):
+    temp_head = Node(0)
+    temp = temp_head
+    while head_a or head_b:
+        if not head_a:
+            temp.next = Node(head_b.value)
+            head_b =  head_b.next
+        elif not head_b:
+            temp.next = Node(head_a.value)
+            head_a =  head_a.next
+        else:
+            if head_a.value + head_b.value == 10:
+                temp.next = Node(0)
+                temp.next.next = Node(1)
+            else:
+                if temp.next:
+                    temp.next.value += head_a.value + head_b.value
+                else:
+                    temp.next = Node(head_a.value + head_b.value)
+            head_a =  head_a.next
+            head_b = head_b.next
+        temp = temp.next
+    return temp_head.next
+
+head_a = Node(2, Node(4, Node(3))) # 342
+head_b = Node(5, Node(6, Node(4))) # 465
+
+print_linked_list(add_two_numbers(head_a, head_b))
