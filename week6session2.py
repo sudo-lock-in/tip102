@@ -31,6 +31,8 @@ clue3.next = clue1
 
 
 def collect_false_evidence(evidence):
+    if not evidence:
+        return []
     false = []
     slow = evidence
     fast = evidence # both start at evidence to keep the math in order. so we have to make them increment first before the condition in while
@@ -82,16 +84,34 @@ def print_linked_list(head):
         current = current.next
 
 def partition(suspect_ratings, threshold):
-    temp_head = Node("temp") 
-    temp_head.next = suspect_ratings 
+    if not suspect_ratings:
+        return None
+    less_or_equal_head = Node(0)
+    greater_head = Node(0)
+    less_or_equal = less_or_equal_head
+    greater = greater_head
+    # temporary nodes to separate based on the nodes value in relation to threshold
     curr = suspect_ratings
-    while curr.next:
-        if curr.value >= threshold and curr.value > curr.next.value:
-            curr.next = suspect_ratings
+    while curr:
+        if curr.value > threshold:
+            greater.next = curr
+            greater = greater.next
+        else:
+            less_or_equal.next = curr
+            less_or_equal = less_or_equal.next
         curr = curr.next
-    return suspect_ratings
+    
+    greater.next = less_or_equal_head.next # the tail of greater head (where the greater pointer is) will link to head of less_or_equal
+
+    if greater_head.next:
+        return greater_head.next
+    else:
+        return less_or_equal_head.next
 
 suspect_ratings = Node(1, Node(4, Node(3, Node(2, Node(5, Node(2))))))
 
-print_linked_list(partition(suspect_ratings, 3))
+# print_linked_list(partition(suspect_ratings, 3))
+
+
+
 
