@@ -84,10 +84,58 @@ def count_odd_splits(root):
 values = [2, 3, 5, 6, 7, None, 12]
 monstera = build_tree(values)
 
-print(count_odd_splits(monstera))
-print(count_odd_splits(None))
+# print(count_odd_splits(monstera))
+# print(count_odd_splits(None))
 
-# Example Output:
+
+
+class TreeNode():
+     def __init__(self, value, left=None, right=None):
+         self.val = value
+         self.left = left
+         self.right = right
+         
+
+
+def find_flower(inventory, name):
+    if not inventory:
+        return False
+    if inventory.val == name:
+        return True
+    return find_flower(inventory.left, name) if name < inventory.val else find_flower(inventory.right, name)
+
+
+values = ["Rose", "Lilac", "Tulip", "Daisy", "Lily", None, "Violet"]
+garden = build_tree(values)
+
+# print(find_flower(garden, "Lilac"))  
+# print(find_flower(garden, "Sunflower")) 
+
+
+def non_bst_find_flower(root, name):
+    if root is None:
+        return False
+    
+    if root.val == name:
+        return True
+
+    return non_bst_find_flower(root.left, name) or non_bst_find_flower(root.right, name)
+
+
+# Compare your solution to find_flower() in Problem 2 to the following solution. Discuss with your group: How is the code different? Why?
+# >We traverse through all nodes in this one while in problem 2 we use a binary search
+# What is the time complexity of non_bst_find_flower()? How does it compare to the time complexity of find_flower() in Problem 2?
+# >The time complexity is O(N). The time complexity of problem 2 is O(log N) 
+# How would the time complexity of find_flower() from Problem 2 change if the tree inventory was not balanced? 
+# >It would become O(N) if the height equals the amount of nodes. Since it is technically going by O(H) where H is height
+
+values = ["Rose", "Lily", "Tulip", "Daisy", "Lilac", None, "Violet"]
+garden = build_tree(values)
+
+
+# print(non_bst_find_flower(garden, "Lilac"))  
+# print(non_bst_find_flower(garden, "Sunflower"))  
+
 
 
 
@@ -110,7 +158,13 @@ class TreeNode:
         self.right = right
 
 def add_plant(collection, name):
-    pass
+    if not collection:
+        return TreeNode(name)
+    if name >= collection.val:
+        collection.right = add_plant(collection.right, name)
+    else:
+        collection.left = add_plant(collection.left, name)
+    return collection    
 
 # Example Usage:
 
@@ -125,7 +179,7 @@ values = ["Money Tree", "Fiddle Leaf Fig", "Snake Plant"]
 collection = build_tree(values)
 
 # Using print_tree() function at the top of page
-print_tree(add_plant(collection, "Aloe"))
+# print_tree(add_plant(collection, "Aloe"))
 
 # Example Output:
 
@@ -138,4 +192,117 @@ print_tree(add_plant(collection, "Aloe"))
 #  Fiddle Leaf Fig   Snake Plant
 #    /
 #  Aloe
+
+class TreeNode:
+    def __init__(self, key, value, left=None, right=None):
+        self.key = key      # Plant rarity
+        self.val = value      # Plant name
+        self.left = left
+        self.right = right
+
+
+def sort_plants(collection):
+    output = []
+    # inorder is left -> root -> right
+    # postorder is left -> right -> root
+    # preorder is root -> left -> right
+    def inorder(collection, output):
+        if collection:
+            inorder(collection.left, output)
+            output.append((collection.val, collection.key))
+            inorder(collection.right, output)
+        return output
+    return inorder(collection, output)
+
+
+values = [(3, "Monstera"), (1, "Pothos"), (5, "Witchcraft Orchid"), None, (2, "Spider Plant"), (4, "Hoya Motoskei")]
+collection = build_tree(values)
+
+# print(sort_plants(collection))
+
+
+
+class TreeNode:
+    def __init__(self, key, val, left=None, right=None):
+        self.key = key      # Plant price
+        self.val = val      # Plant name
+        self.left = left
+        self.right = right
+
+def pick_plant(inventory, budget):
+    output = []
+    # inorder is left -> root -> right
+    # postorder is left -> right -> root
+    # preorder is root -> left -> right
+    def inorder(inventory, output, budget):
+        if inventory:
+            inorder(inventory.left, output, budget)
+            if inventory.val < budget:
+                output.append((inventory.key))
+            inorder(inventory.right, output, budget)
+        if output:
+            return output[-1]
+        return None
+    return inorder(inventory, output, budget)
+
+values = [(50, "Fiddle Leaf Fig"), (25, "Monstera"), (70, "Snake Plant"), (15, "Aloe"), 
+            (40, "Pothos"), (60, "Fern"), (80, "ZZ Plant")]
+inventory = build_tree(values)
+
+# print(pick_plant(inventory, 50)) 
+# print(pick_plant(inventory, 25)) 
+# print(pick_plant(inventory, 15)) 
+
+class TreeNode:
+    def __init__(self, value, left=None, right=None):
+        self.val = value
+        self.left = left
+        self.right = right
+
+def remove_plant(collection, name):
+    if not collection:
+        return None
+    # Find the node to remove
+    if collection.val > name:
+        collection.left = remove_plant(collection.left, name)
+    elif collection.val < name:
+        collection.right = remove_plant(collection.right, name)
+    else:
+    # If the node has no children
+        # Remove the node by setting parent pointer to None
+        if not collection.right and not collection.left:
+            return None
+    # If the node has one child
+        # Replace the node with its child
+        if not collection.right:
+            return collection.left
+        elif not collection.left:
+            return collection.right
+    # If the node has two children
+        # Find the inorder predecessor 
+    # To find the inorder predecessor, we can follow the following steps:
+    # If the node has a left subtree, the predecessor is the rightmost (largest) node in the left subtree.
+    # If the node doesn't have a left subtree, you traverse upwards to find the deepest ancestor for which the given node lies in the right subtree.
+        def rightmost(collection):
+            curr = collection
+            while curr.right:
+                curr = curr.right
+            return curr
+        pre = rightmost(collection.left)
+        # Replace the node's value with inorder predecessor value
+        collection.val = pre.val
+        # Remove inorder predecessor
+        collection.left = remove_plant(collection.left, pre.val)
+    # Return root of updated tree
+    return collection
+  
+    
+
+    
+# Using build_tree() function at the top of page
+values = ["Money Tree", "Hoya", "Pilea", None, "Ivy", "Orchid", "ZZ Plant"]
+collection = build_tree(values)
+
+# Using print_tree() function at the top of page
+print_tree(remove_plant(collection, "Pilea"))
 

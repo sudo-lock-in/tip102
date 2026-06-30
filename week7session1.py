@@ -33,15 +33,19 @@ def count_suits_iterative(suits):
         count += 1
     return count 
 
-def count_suits_recursive(suits, seen):
-    if not suits:
-        return 0
-    if suits[0] not in seen:
-        seen.append(suits[0])
-        return 1 + count_suits_recursive(suits[1:], seen)
-    return count_suits_recursive(suits[1:], seen)
+def count_suits_recursive(suits):
+    seen = []
+    def count(suits, seen):
+        if not suits:
+            return 0
+        if suits[0] not in seen:
+            seen.append(suits[0])
+            return 1 + count(suits[1:], seen)
+        else:
+            return count(suits[1:], seen)
+    return count(suits, seen)
 
-# legit solution:
+# codepath's solution:
 # def count_suits_recursive(suits):
 #     if not suits:
 #         return 0
@@ -52,9 +56,9 @@ def count_suits_recursive(suits, seen):
 #     else:
 #         return 1 + rest_unique_count
 
-seen = []
+# seen = []
 # print(count_suits_iterative(["Mark I", "Mark I", "Mark III"]))
-# print(count_suits_recursive(["Mark I", "Mark I", "Mark III"], seen))
+# print(count_suits_recursive(["Mark I", "Mark I", "Mark III"]))
 
 
 
