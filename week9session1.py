@@ -89,10 +89,10 @@ def max_tiers(cake):
         return 1 + height(cake.left) + height(cake.right)
     leftDepth = height(cake.left)
     rightDepth = height(cake.right)
-    if not leftDepth:
-        return rightDepth
-    if not rightDepth:
-        return leftDepth
+    # if not leftDepth:
+    #     return rightDepth
+    # if not rightDepth:
+    #     return leftDepth
     return max(leftDepth, rightDepth)
 
 # Example Usage:
@@ -108,7 +108,56 @@ def max_tiers(cake):
 cake_sections = ["Chocolate", "Vanilla", "Strawberry", None, None, "Chocolate", "Coffee"]
 cake = build_tree(cake_sections)
 
-print(max_tiers(cake))
+# print(max_tiers(cake))
+
+
+def can_fulfill_order(inventory, order_size):
+    if not inventory:
+        return order_size == 0
+    # if not inventory.right:
+    #     return can_fulfill_order(inventory.left, order_size - inventory.val)
+    # if not inventory.left:
+    #     return can_fulfill_order(inventory.right, order_size - inventory.val)
+    return can_fulfill_order(inventory.left, order_size - inventory.val) or can_fulfill_order(inventory.right, order_size - inventory.val)
+
+quantities = [5,4,8,11,None,13,4,7,2,None,None,None,1]
+baked_goods = build_tree(quantities)
+# print(can_fulfill_order(baked_goods, 22))
+# print(can_fulfill_order(baked_goods, 2))
+
+
+class TreeNode():
+     def __init__(self, flavor, left=None, right=None):
+        self.val = flavor
+        self.left = left
+        self.right = right
+
+def zigzag_icing_order(cupcakes):
+    order = []
+    if not cupcakes:
+        return order
+    queue = deque([cupcakes]) # puts it as list to be iterable
+    left_to_right = True
+    while queue:
+        level = deque()
+        lvl_size = len(queue)
+        for _ in range(lvl_size):
+            node = queue.popleft()
+            if left_to_right:
+                level.append(node.val)
+            else:
+                level.appendleft(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        order.extend(level)
+        left_to_right = not left_to_right # swaps the order
+    return order
+
+flavors = ["Chocolate", "Vanilla", "Lemon", "Strawberry", None, "Hazelnut", "Red Velvet"]
+cupcakes = build_tree(flavors)
+# print(zigzag_icing_order(cupcakes))
 
 
 

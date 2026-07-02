@@ -117,10 +117,21 @@ def power_of_four(n):
 # Example 2 Explanation: 4 to the power of -2 is 1/(4 * 4), which is 0.0625.
 
 
-#bradshaw solved this without slicing. using a helper function within. chanigng the params
+# bradshaw solved this without slicing so i wanted to try something like that
+# for space complexity
 def strongest_avenger(strengths):
-    pass
-
+    length = len(strengths)
+    index = 0
+    maxi = strengths[index]
+    def find_max(strengths, length, index, maxi):
+        if index == length:
+            return maxi
+        if strengths[index] > maxi:
+            maxi = strengths[index]
+        return find_max(strengths, length, index + 1, maxi)
+    return find_max(strengths, length, index, maxi)
+# print(strongest_avenger([88, 92, 95, 99, 97, 100, 94]))
+# print(strongest_avenger([50, 75, 85, 60, 90]))
 
 # problem set 2
 
